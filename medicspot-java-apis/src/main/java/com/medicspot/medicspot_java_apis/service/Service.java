@@ -28,10 +28,22 @@ public class Service {
 		
 		for(Medicine obj : resDB)
 		{
-			MedicineBO boObj = new MedicineBO(obj.getMedicineId().toString(),obj.getMedicineDescription());
+				String [] arr = obj.getMedicineComposition();
+				StringBuilder compStr = new StringBuilder();
+				for(String val : arr)
+					compStr.append(val);
+			MedicineBO boObj = new MedicineBO(obj.getMedicineId().toString(),
+					obj.getMedicineDescription(),compStr.toString(),
+					String.valueOf(obj.getMedicinePrice()));
 			res.add(boObj);
 		}
 		return res;
+	}
+	
+	public List<Medicine> saveNewMedicines(List<Medicine> newMedicineList)
+	{
+		List<Medicine> returnVal = (List<Medicine>) repo.saveAll(newMedicineList);
+		return returnVal;
 	}
 
 }
