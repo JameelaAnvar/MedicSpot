@@ -33,5 +33,11 @@ public class Controller {
 		List<Medicine> response = service.saveNewMedicines(medicineList);
 		return new ResponseEntity<List<Medicine>>(response, HttpStatus.OK);
 	}
+	
+	@GetMapping("/hello")
+	public String getHello()
+	{
+		return "Hello World";
+	}
 
 }
