@@ -1,6 +1,0 @@
----
-applications:
-- name: MedicSpot
-  buildpack: sap_java_buildpack
-  path: target\medicspot-java-apis-0.0.1-SNAPSHOT.jar
-  
