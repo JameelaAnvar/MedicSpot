@@ -15,12 +15,17 @@ import org.hibernate.annotations.TypeDefs;
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "Medicine")
 @TypeDefs({ @TypeDef(name = "string-array", typeClass = StringArrayType.class),
 		@TypeDef(name = "int-array", typeClass = IntArrayType.class) })
 public class Medicine implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -29,52 +34,33 @@ public class Medicine implements Serializable {
 	@GeneratedValue
 	UUID medicineId;
 
-	@Column(name = "name")
-	String medicineDescription;
+	@Column(name = "drug_composition")
+	String drugComposition;
 
-	@Type(type = "string-array")
-	@Column(name = "composition", columnDefinition = "pg-text[]")
-	String[] medicineComposition;
+	
+	@Column(name = "drug_description")
+	String drugDescription;
 
-	@Column(name = "price")
-	double medicinePrice;
+	@Column(name = "drug_intake_quantity")
+	String drugIntakeQuantity;
 
-	public UUID getMedicineId() {
-		return medicineId;
-	}
+	@Column(name = "drug_manufacturer")
+	String drugManufacturer;
 
-	public void setMedicineId(UUID medicineId) {
-		this.medicineId = medicineId;
-	}
+	@Column(name = "drug_name")
+	String drugName;
 
-	public String getMedicineDescription() {
-		return medicineDescription;
-	}
+	@Column(name = "drug_price")
+	double drugPrice;
 
-	public void setMedicineDescription(String medicineDescription) {
-		this.medicineDescription = medicineDescription;
-	}
+	@Column(name = "drug_quantity")
+	String drugQuantity;
 
-	public String[] getMedicineComposition() {
-		return medicineComposition;
-	}
+	@Column(name = "drug_type")
+	String drugType;
 
-	public void setMedicineComposition(String[] medicineComposition) {
-		this.medicineComposition = medicineComposition;
-	}
+	@Column(name = "generic_medicine_name")
+	String genericMedicineName;
 
-	public double getMedicinePrice() {
-		return medicinePrice;
-	}
-
-	public void setMedicinePrice(double medicinePrice) {
-		this.medicinePrice = medicinePrice;
-	}
-
-	/*
-	 * public Medicine(UUID medicineId, String medicineDescription) { super();
-	 * this.medicineId = medicineId; this.medicineDescription = medicineDescription;
-	 * }
-	 */
 
 }

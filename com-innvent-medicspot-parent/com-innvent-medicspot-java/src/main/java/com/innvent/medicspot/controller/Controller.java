@@ -1,5 +1,6 @@
 package com.innvent.medicspot.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.innvent.medicspot.model.Medicine;
-import com.innvent.medicspot.model.MedicineBO;
 import com.innvent.medicspot.service.MedicineService;
 
 
@@ -23,15 +23,15 @@ import com.innvent.medicspot.service.MedicineService;
 @RestController
 @RequestMapping(value = "/MedicSpot/v1")
 public class Controller {
-	
+
 	@Autowired 
 	MedicineService service;
 	
 	@GetMapping("/list/Medicines")
 	public ResponseEntity<?> getMedicinesList()
 	{
-		List<MedicineBO> medicineList = service.fetchMedicineList();
-		return new ResponseEntity<List<MedicineBO>>(medicineList,HttpStatus.OK);
+		List<Medicine> medicineList = service.fetchMedicineList();
+		return new ResponseEntity<List<Medicine>>(medicineList,HttpStatus.OK);
 	}
 	
 	@PostMapping("/save/Medicines")
@@ -45,6 +45,14 @@ public class Controller {
 	public String getHello()
 	{
 		return "Hello World";
+	}
+	
+	@GetMapping("/dataLoad")
+	public String dataDump() throws IOException
+	{
+		service.dumpMedicineList();
+		
+		return "Dump Success";
 	}
 
 }

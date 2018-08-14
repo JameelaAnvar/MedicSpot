@@ -1,0 +1,6 @@
+---
+applications:
+- name: MedicSpot
+  buildpack: sap_java_buildpack
+  path: target\com-innvent-medicspot-java-0.0.1-SNAPSHOT.jar
+  
