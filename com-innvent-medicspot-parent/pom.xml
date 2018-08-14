@@ -1,0 +1,17 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.innvent.medicspot</groupId>
+	<artifactId>com-innvent-medicspot-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>com-innvent-medicspot-parent</name>
+	<description>MedicSpot Application Parent</description>
+	<modules>
+		<module>com-innvent-medicspot-commons</module>
+		<module>com-innvent-medicspot-java</module>
+		<module>com-innvent-medicspot-python</module>
+		<module>com-innvent-medicspot-ui</module>
+	</modules>
+</project>
