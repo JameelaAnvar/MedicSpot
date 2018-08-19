@@ -4,5 +4,5 @@ applications:
   buildpack: sap_java_buildpack
   path: target\com-innvent-medicspot-java-0.0.1-SNAPSHOT.jar
   routes:
-  - route: medicspot-hr.cfapps.eu10.hana.ondemand.com
+  - route: medicspot-app.cfapps.eu10.hana.ondemand.com
   

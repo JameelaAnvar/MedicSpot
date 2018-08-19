@@ -19,6 +19,7 @@ import com.innvent.medicspot.model.LoginBO;
 import com.innvent.medicspot.model.Medicine;
 import com.innvent.medicspot.model.Store;
 import com.innvent.medicspot.model.StoreBO;
+import com.innvent.medicspot.model.StoreDetails;
 import com.innvent.medicspot.service.MedicineService;
 import com.innvent.medicspot.service.StoreRegisterService;
 import com.innvent.medicspot.service.StoreService;
@@ -32,7 +33,7 @@ public class Controller {
 
 	@Autowired
 	StoreService storeService;
-	
+
 	@Autowired
 	StoreRegisterService storeRegService;
 
@@ -56,9 +57,13 @@ public class Controller {
 		return new ResponseEntity<List<Store>>(storeList, HttpStatus.OK);
 	}
 
-	@GetMapping("/hello")
-	public String getHello() {
-		return "Hello World";
+	@GetMapping("/nearbystores/details")
+	public ResponseEntity<?> fetchNearbyStoreDetails(@RequestParam(value = "placeId", required = false) String placeId,
+			@RequestParam(value = "lat", required = false) String lat,
+			@RequestParam(value = "lng", required = false) String lng) {
+
+		List<StoreDetails> storeList = storeService.fetchNearbyStoreDetails(placeId, lat, lng);
+		return new ResponseEntity<List<StoreDetails>>(storeList, HttpStatus.OK);
 	}
 
 	@GetMapping("/dataLoad")
@@ -69,8 +74,7 @@ public class Controller {
 	}
 
 	@PostMapping("/register/NewStore")
-	public ResponseEntity<?> saveNewStore(@RequestBody StoreBO storePayload)
-	{
+	public ResponseEntity<?> saveNewStore(@RequestBody StoreBO storePayload) {
 		ResponseEntity<?> res = null;
 		try {
 			res = storeRegService.addNewStore(storePayload);
@@ -81,10 +85,9 @@ public class Controller {
 		}
 		return res;
 	}
-	
+
 	@PostMapping("/login/Store")
-	public ResponseEntity<?> validateUserLogin(@RequestBody LoginBO login)
-	{
+	public ResponseEntity<?> validateUserLogin(@RequestBody LoginBO login) {
 		String response = storeRegService.authenticateVendor(login);
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
