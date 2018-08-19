@@ -1,6 +1,8 @@
 package com.innvent.medicspot.controller;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Map;
 
+import com.innvent.medicspot.model.LoginBO;
 import com.innvent.medicspot.model.Medicine;
 import com.innvent.medicspot.model.Store;
+import com.innvent.medicspot.model.StoreBO;
 import com.innvent.medicspot.service.MedicineService;
+import com.innvent.medicspot.service.StoreRegisterService;
 import com.innvent.medicspot.service.StoreService;
 
 @RestController
@@ -28,6 +32,9 @@ public class Controller {
 
 	@Autowired
 	StoreService storeService;
+	
+	@Autowired
+	StoreRegisterService storeRegService;
 
 	@GetMapping("/list/Medicines")
 	public ResponseEntity<?> getMedicinesList() {
@@ -61,4 +68,23 @@ public class Controller {
 		return "Dump Success";
 	}
 
+	@PostMapping("/register/NewStore")
+	public ResponseEntity<?> saveNewStore(@RequestBody StoreBO storePayload)
+	{
+		try {
+			storeRegService.addNewStore(storePayload);
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<>("Exception Occured", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<String>("New Store Added successfully", HttpStatus.OK);
+	}
+	
+	@PostMapping("/login/Store")
+	public ResponseEntity<?> validateUserLogin(@RequestBody LoginBO login)
+	{
+		String response = storeRegService.authenticateVendor(login);
+		return new ResponseEntity<String>(response, HttpStatus.OK);
+	}
 }
