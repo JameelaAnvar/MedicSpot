@@ -62,5 +62,90 @@ public class Medicine implements Serializable {
 	@Column(name = "generic_medicine_name")
 	String genericMedicineName;
 
+	public UUID getMedicineId() {
+		return medicineId;
+	}
+
+	public void setMedicineId(UUID medicineId) {
+		this.medicineId = medicineId;
+	}
+
+	public String getDrugComposition() {
+		return drugComposition;
+	}
+
+	public void setDrugComposition(String drugComposition) {
+		this.drugComposition = drugComposition;
+	}
+
+	public String getDrugDescription() {
+		return drugDescription;
+	}
+
+	public void setDrugDescription(String drugDescription) {
+		this.drugDescription = drugDescription;
+	}
+
+	public String getDrugIntakeQuantity() {
+		return drugIntakeQuantity;
+	}
+
+	public void setDrugIntakeQuantity(String drugIntakeQuantity) {
+		this.drugIntakeQuantity = drugIntakeQuantity;
+	}
+
+	public String getDrugManufacturer() {
+		return drugManufacturer;
+	}
+
+	public void setDrugManufacturer(String drugManufacturer) {
+		this.drugManufacturer = drugManufacturer;
+	}
+
+	public String getDrugName() {
+		return drugName;
+	}
+
+	public void setDrugName(String drugName) {
+		this.drugName = drugName;
+	}
+
+	public double getDrugPrice() {
+		return drugPrice;
+	}
+
+	public void setDrugPrice(double drugPrice) {
+		this.drugPrice = drugPrice;
+	}
+
+	public String getDrugQuantity() {
+		return drugQuantity;
+	}
+
+	public void setDrugQuantity(String drugQuantity) {
+		this.drugQuantity = drugQuantity;
+	}
+
+	public String getDrugType() {
+		return drugType;
+	}
+
+	public void setDrugType(String drugType) {
+		this.drugType = drugType;
+	}
+
+	public String getGenericMedicineName() {
+		return genericMedicineName;
+	}
+
+	public void setGenericMedicineName(String genericMedicineName) {
+		this.genericMedicineName = genericMedicineName;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	
 
 }
