@@ -10,7 +10,7 @@ import com.innvent.medicspot.model.StoreAccount;
 
 public interface StoreRegisterRepository extends CrudRepository<StoreAccount, UUID> {
 
-	String getStore = "select * from store_account where username = :userId";
+	String getStore = "select * from store_account where :userId is NULL OR username = :userId";
 	
 	@Query(value = getStore, nativeQuery = true)
 	public StoreAccount getStoreDetails(@Param(value = "userId") String userId);

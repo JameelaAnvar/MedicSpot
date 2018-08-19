@@ -71,14 +71,15 @@ public class Controller {
 	@PostMapping("/register/NewStore")
 	public ResponseEntity<?> saveNewStore(@RequestBody StoreBO storePayload)
 	{
+		ResponseEntity<?> res = null;
 		try {
-			storeRegService.addNewStore(storePayload);
+			res = storeRegService.addNewStore(storePayload);
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new ResponseEntity<>("Exception Occured", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<String>("New Store Added successfully", HttpStatus.OK);
+		return res;
 	}
 	
 	@PostMapping("/login/Store")
