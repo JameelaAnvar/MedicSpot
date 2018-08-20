@@ -91,4 +91,28 @@ public class Controller {
 		String response = storeRegService.authenticateVendor(login);
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
+	
+	@GetMapping("/login/Store")
+	public Object validateUserLoginCSRF()
+	{
+		return new Object();
+	}
+	
+	@GetMapping("/register/NewStore")
+	public Object saveNewStoreCSRF()
+	{
+		return new Object();
+	}
+	
+	@GetMapping("/save/Medicines")
+	public Object saveMedicinesCSRF()
+	{
+		return new Object();
+	}
+	
+	@GetMapping("/nearbystores/geodetails")
+	public Object nearbyStoresDetailsCSRF()
+	{
+		return new Object();
+	}
 }
