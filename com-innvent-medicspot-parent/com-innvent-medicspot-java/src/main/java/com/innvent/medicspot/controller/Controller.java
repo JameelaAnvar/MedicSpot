@@ -60,11 +60,10 @@ public class Controller {
 	}
 
 	@GetMapping("/nearbystores/details")
-	public ResponseEntity<?> fetchNearbyStoreDetails(@RequestParam(value = "placeId", required = false) String placeId,
-			@RequestParam(value = "lat", required = false) String lat,
-			@RequestParam(value = "lng", required = false) String lng) {
+	public ResponseEntity<?> fetchNearbyStoreDetails(
+			@RequestParam(value = "placeId", required = false) String placeId) {
 
-		List<StoreDetails> storeList = storeService.fetchNearbyStoreDetails(placeId, lat, lng);
+		List<StoreDetails> storeList = storeService.fetchNearbyStoreDetails(placeId);
 		return new ResponseEntity<List<StoreDetails>>(storeList, HttpStatus.OK);
 	}
 
@@ -74,6 +73,12 @@ public class Controller {
 
 		return "Dump Success";
 	}
+
+	// @GetMapping("/store/placeId")
+	// public ResponseEntity<?> getStore() {
+	// return new
+	// ResponseEntity<Store>(storeDao.getById("ChIJ30AMQssTrjsRfosWgadSTDc"),HttpStatus.OK);
+	// }
 
 	@PostMapping("/register/NewStore")
 	public ResponseEntity<?> saveNewStore(@RequestBody StoreBO storePayload) {
@@ -91,39 +96,36 @@ public class Controller {
 	@PostMapping("/login/Store")
 	public ResponseEntity<?> validateUserLogin(@RequestBody LoginBO login) {
 		String response = storeRegService.authenticateVendor(login);
-		Map<String,String> map = new HashMap<>();
-		if(response.contains(":"))
-		{
+		Map<String, String> map = new HashMap<>();
+		if (response.contains(":")) {
 			String arr[] = response.split(":");
 			map.put("Status", "Authenticated");
-			map.put("Store Name",arr[1]);
-			return (ResponseEntity<?>) map;
+			map.put("Store Name", arr[1]);
+			return new ResponseEntity<>(map, HttpStatus.OK);
 		}
 		map.put("Status", response);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/login/Store")
-	public Object validateUserLoginCSRF()
-	{
+	public Object validateUserLoginCSRF() {
 		return new Object();
 	}
-	
+
 	@GetMapping("/register/NewStore")
-	public Object saveNewStoreCSRF()
-	{
+	public Object saveNewStoreCSRF() {
 		return new Object();
 	}
-	
+
 	@GetMapping("/save/Medicines")
-	public Object saveMedicinesCSRF()
-	{
+	public Object saveMedicinesCSRF() {
+		return new Object();
+	}
+
+	@GetMapping("/nearbystores/geodetails")
+	public Object nearbyStoresGeoDetailsCSRF() {
 		return new Object();
 	}
 	
-	@GetMapping("/nearbystores/geodetails")
-	public Object nearbyStoresDetailsCSRF()
-	{
-		return new Object();
-	}
+	
 }
