@@ -48,7 +48,7 @@ public class StoreRegisterService {
 		{
 			return "Store account doesn't exists !";
 		}
-		return authenticator.authenticate(login.getPassword(), store.getHashPassword())==true?"Authenticated":"UnAuthorished";
+		return authenticator.authenticate(login.getPassword(), store.getHashPassword())==true?"Authenticated:"+store.getStoreAddress():"UnAuthorished";
 	}
 
 }

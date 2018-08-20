@@ -3,7 +3,9 @@ package com.innvent.medicspot.controller;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -89,7 +91,16 @@ public class Controller {
 	@PostMapping("/login/Store")
 	public ResponseEntity<?> validateUserLogin(@RequestBody LoginBO login) {
 		String response = storeRegService.authenticateVendor(login);
-		return new ResponseEntity<String>(response, HttpStatus.OK);
+		Map<String,String> map = new HashMap<>();
+		if(response.contains(":"))
+		{
+			String arr[] = response.split(":");
+			map.put("Status", "Authenticated");
+			map.put("Store Name",arr[1]);
+			return (ResponseEntity<?>) map;
+		}
+		map.put("Status", response);
+		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 	
 	@GetMapping("/login/Store")
