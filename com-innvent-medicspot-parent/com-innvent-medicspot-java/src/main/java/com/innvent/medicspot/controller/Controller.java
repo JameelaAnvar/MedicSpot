@@ -22,6 +22,7 @@ import com.innvent.medicspot.model.Medicine;
 import com.innvent.medicspot.model.Store;
 import com.innvent.medicspot.model.StoreBO;
 import com.innvent.medicspot.model.StoreDetails;
+import com.innvent.medicspot.service.LocationService;
 import com.innvent.medicspot.service.MedicineService;
 import com.innvent.medicspot.service.StoreRegisterService;
 import com.innvent.medicspot.service.StoreService;
@@ -38,6 +39,9 @@ public class Controller {
 
 	@Autowired
 	StoreRegisterService storeRegService;
+	
+	@Autowired
+	LocationService locationService;
 
 	@GetMapping("/list/Medicines")
 	public ResponseEntity<?> getMedicinesList() {
@@ -127,5 +131,9 @@ public class Controller {
 		return new Object();
 	}
 	
-	
+	@GetMapping("/currentLocationAddress")
+	public String currentAddress()
+	{
+		return locationService.fetchCurrentPlaceDetails();
+	}
 }

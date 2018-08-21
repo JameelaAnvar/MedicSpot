@@ -41,9 +41,9 @@ public class PostgresDataSourceConfig {
 		 */
 
 		// Jameela cf DataSource connect
-		DataSource ds = dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
+		/*DataSource ds = dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
 				.url("jdbc:postgresql://10.11.241.0:59486/guddVbgkSIZsAM7O").driverClassName("org.postgresql.Driver")
-				.build();
+				.build();*/
 
 		// adil chisel database server connect
 		/*
@@ -53,11 +53,11 @@ public class PostgresDataSourceConfig {
 		 * .driverClassName("org.postgresql.Driver").build();
 		 */
 
-		// Jameela chisel database server connect
-		// DataSource ds =
-		// dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
-		// .url("jdbc:postgresql://localhost:30015/guddVbgkSIZsAM7O").driverClassName("org.postgresql.Driver")
-		// .build();
+		 //Jameela chisel database server connect
+		 DataSource ds =
+		 dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
+		 .url("jdbc:postgresql://localhost:30015/guddVbgkSIZsAM7O").driverClassName("org.postgresql.Driver")
+		 .build();
 
 		return ds;
 
