@@ -1,7 +1,6 @@
 package com.innvent.medicspot.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,12 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+
 
 import com.innvent.medicspot.dao.StoreRepository;
 import com.innvent.medicspot.model.Store;
@@ -26,25 +20,20 @@ import com.innvent.medicspot.model.StoreDetails;
 public class StoreService {
 
 	@Autowired
-	RestTemplate restTemplate;
-
-	@Autowired
 	private StoreRepository storeDao;
-
-	final String nearbyStoresUri = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=value&radius=5000&types=pharmacy&key=keyValue";
-	final String googleAPIKey = "AIzaSyBrx1Yf2QcskB22aFPBTzlpLWHuesWQXv4";
-	final String placeDetailsUri = "https://maps.googleapis.com/maps/api/place/details/json?placeid=placeValue&key=keyValue";
-	final String geoLocateUri = "https://www.googleapis.com/geolocation/v1/geolocate?key=keyValue";
-
-	public List<Store> fetchNearbyStoreGeoDetails(String lat, String lng) {
+	
+	@Autowired
+	private LocationService locationService;
+	
+	
+	public List<Store> fetchandSaveNearbyStoreGeoDetails(String lat, String lng) {
 
 		List<Store> responseList = null;
-		String uri = nearbyStoresUri.replace("value", lat + "," + lng).replace("keyValue", googleAPIKey);
-		ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+		String response = locationService.fetchNearbyStoreGeoDetails(lat, lng);
 		List<Store> storeList = new ArrayList<>();
 		JSONObject object;
 		try {
-			object = new JSONObject(response.getBody());
+			object = new JSONObject(response);
 			JSONArray results = (JSONArray) object.get("results");
 			for (int i = 0; i < results.length(); i++) {
 
@@ -73,10 +62,9 @@ public class StoreService {
 
 	public StoreDetails fetchPlaceDetails(String placeId) {
 		StoreDetails storeDetails = null;
-		String uri = placeDetailsUri.replace("placeValue", placeId).replace("keyValue", googleAPIKey);
-		ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+		String response = locationService.fetchPlaceDetails(placeId);
 		try {
-			JSONObject object = new JSONObject(response.getBody());
+			JSONObject object = new JSONObject(response);
 			JSONObject result = (JSONObject) object.get("result");
 			JSONObject geometry = (JSONObject) result.get("geometry");
 			JSONObject location = (JSONObject) geometry.get("location");
@@ -96,30 +84,7 @@ public class StoreService {
 		return storeDetails;
 	}
 
-	public Map<String, String> getGeoLocationCordinates() {
-		Map<String, String> locationMap = new HashMap<>();
-		String uri = geoLocateUri.replace("keyValue", googleAPIKey);
-		// HttpHeaders headers = new HttpHeaders();
-		// headers.setContentType(MediaType.APPLICATION_JSON);
-		// HttpEntity<String> entity = new HttpEntity<String>("", headers);
-		ResponseEntity<String> response = restTemplate.postForEntity(uri, null, String.class);
-		// exchange(uri, HttpMethod.POST, entity, String.class);
-
-		try {
-			JSONObject object = new JSONObject(response.getBody());
-			if (object != null) {
-				JSONObject location = object.getJSONObject("location");
-				if (location != null && location.get("lat") != null && location.get("lng") != null) {
-					locationMap.put("lat", ((Double) location.get("lat")).toString());
-					locationMap.put("lng", ((Double) location.get("lng")).toString());
-				}
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-		}
-		return locationMap;
-	}
+	
 
 	public List<StoreDetails> fetchNearbyStoreDetails(String placeId) {
 		String lat = "", lng = "";
@@ -127,10 +92,9 @@ public class StoreService {
 		try {
 
 			if (placeId != null) {
-				String uri = placeDetailsUri.replace("placeValue", placeId).replace("keyValue", googleAPIKey);
-				ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+				String response = locationService.fetchPlaceDetails(placeId);
 				JSONObject location;
-				JSONObject object = new JSONObject(response.getBody());
+				JSONObject object = new JSONObject(response);
 				JSONObject result = (JSONObject) object.get("result");
 				if (result != null) {
 					JSONObject geometry = (JSONObject) result.get("geometry");
@@ -143,12 +107,12 @@ public class StoreService {
 					}
 				}
 			} else {
-				Map<String, String> locationMap = getGeoLocationCordinates();
+				Map<String,String> locationMap = locationService.fetchGeoLocationCoordinates();
 				lat = locationMap.get("lat");
 				lng = locationMap.get("lng");
 			}
 
-			List<Store> storeList = fetchNearbyStoreGeoDetails(lat, lng);
+			List<Store> storeList = fetchandSaveNearbyStoreGeoDetails(lat, lng);
 			storeDetailsList = storeList.stream().map(s -> {
 				StoreDetails storeDetails = fetchPlaceDetails(s.getStorePlaceId());
 				storeDetails.setStoreId(s.getStoreId().toString());

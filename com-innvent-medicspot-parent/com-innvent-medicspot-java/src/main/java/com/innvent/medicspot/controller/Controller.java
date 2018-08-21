@@ -59,7 +59,7 @@ public class Controller {
 	public ResponseEntity<?> fetchNearbyStoreGeoDetails(@RequestParam("lat") String lat,
 			@RequestParam("lng") String lng) {
 
-		List<Store> storeList = storeService.fetchNearbyStoreGeoDetails(lat, lng);
+		List<Store> storeList = storeService.fetchandSaveNearbyStoreGeoDetails(lat, lng);
 		return new ResponseEntity<List<Store>>(storeList, HttpStatus.OK);
 	}
 
@@ -131,9 +131,16 @@ public class Controller {
 		return new Object();
 	}
 	
-	@GetMapping("/currentLocationAddress")
-	public String currentAddress()
+	@GetMapping("/currentLocationCoordinates")
+	public ResponseEntity<?> getCurrentLocationCoordinates()
 	{
-		return locationService.fetchCurrentPlaceDetails();
+		return new ResponseEntity<>(locationService.fetchGeoLocationCoordinates(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/currentLocationAddress")
+	public ResponseEntity<?> getCurrentAddress()
+	{
+		
+		return new ResponseEntity<>(locationService.fetchCurrentAddress(), HttpStatus.OK);
 	}
 }
