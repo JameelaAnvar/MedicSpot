@@ -85,7 +85,8 @@ public class PostgresDataSourceConfig {
 		Properties additionalProperties = new Properties();
 		additionalProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
 		additionalProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-		additionalProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+		// additionalProperties.put("hibernate.hbm2ddl.auto",
+		// env.getProperty("hibernate.hbm2ddl.auto"));
 		additionalProperties.put("hibernate.jdbc.lob.non_contextual_creation",
 				env.getProperty("hibernate.jdbc.lob.non_contextual_creation"));
 		additionalProperties.put("hibernate.temp.use_jdbc_metadata_defaults",
