@@ -57,12 +57,9 @@ public class LocationService {
 		return locationMap;
 	}
 
-	public Map<String, String> fetchCurrentAddress() {
+	public Map<String, String> fetchCurrentAddress(String lat, String lng) {
 
-		String lat, lng;
-		Map<String, String> locationMap = fetchGeoLocationCoordinates();
-		lat = locationMap.get("lat");
-		lng = locationMap.get("lng");
+		
 		String uri = geoLocationAddressUri.replace("value", lat + "," + lng);
 		ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
 		JSONObject object;

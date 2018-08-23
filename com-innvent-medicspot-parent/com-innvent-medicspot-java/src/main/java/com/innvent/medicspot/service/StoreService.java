@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 import com.innvent.medicspot.dao.StoreRepository;
 import com.innvent.medicspot.model.Store;
 import com.innvent.medicspot.model.StoreDetails;
@@ -21,11 +20,10 @@ public class StoreService {
 
 	@Autowired
 	private StoreRepository storeDao;
-	
+
 	@Autowired
 	private LocationService locationService;
-	
-	
+
 	public List<Store> fetchandSaveNearbyStoreGeoDetails(String lat, String lng) {
 
 		List<Store> responseList = null;
@@ -84,8 +82,6 @@ public class StoreService {
 		return storeDetails;
 	}
 
-	
-
 	public List<StoreDetails> fetchNearbyStoreDetails(String placeId) {
 		String lat = "", lng = "";
 		List<StoreDetails> storeDetailsList = null;
@@ -106,18 +102,14 @@ public class StoreService {
 						}
 					}
 				}
-			} else {
-				Map<String,String> locationMap = locationService.fetchGeoLocationCoordinates();
-				lat = locationMap.get("lat");
-				lng = locationMap.get("lng");
-			}
 
-			List<Store> storeList = fetchandSaveNearbyStoreGeoDetails(lat, lng);
-			storeDetailsList = storeList.stream().map(s -> {
-				StoreDetails storeDetails = fetchPlaceDetails(s.getStorePlaceId());
-				storeDetails.setStoreId(s.getStoreId().toString());
-				return storeDetails;
-			}).collect(Collectors.toList());
+				List<Store> storeList = fetchandSaveNearbyStoreGeoDetails(lat, lng);
+				storeDetailsList = storeList.stream().map(s -> {
+					StoreDetails storeDetails = fetchPlaceDetails(s.getStorePlaceId());
+					storeDetails.setStoreId(s.getStoreId().toString());
+					return storeDetails;
+				}).collect(Collectors.toList());
+			}
 
 		} catch (
 

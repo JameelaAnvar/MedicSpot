@@ -138,9 +138,10 @@ public class Controller {
 	}
 	
 	@GetMapping("/currentLocationAddress")
-	public ResponseEntity<?> getCurrentAddress()
+	public ResponseEntity<?> getCurrentAddress(@RequestParam("lat") String lat,
+			@RequestParam("lng") String lng)
 	{
 		
-		return new ResponseEntity<>(locationService.fetchCurrentAddress(), HttpStatus.OK);
+		return new ResponseEntity<>(locationService.fetchCurrentAddress(lat,lng), HttpStatus.OK);
 	}
 }
