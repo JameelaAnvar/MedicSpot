@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-import org.apache.commons.collections4.map.HashedMap;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.innvent.medicspot.dao.MedicineRepository;
@@ -134,5 +135,29 @@ public class MedicineService {
 			}
 		}
 		return res;
+	}
+	
+	public void saveFeedBack(MedicineStoreDO entity)
+	{
+		entity.setId(entity.getStoreId()+","+entity.getMedicineId());
+		try {
+		medStoreRepo.addFeedback(entity.getId(), entity.getStoreId(), UUID.fromString(entity.getMedicineId()));
+		}
+		catch(Exception e)
+		{
+			return;
+		}
+	}
+	public void addMedicineToStore(MedicineStoreDO entity)
+	{
+		entity.setId(entity.getStoreId()+","+entity.getMedicineId());
+		entity.setConfirmed(true);
+		try {
+		medStoreRepo.addMedicineAvailability(entity.getId(), entity.getStoreId(), UUID.fromString(entity.getMedicineId()), true);
+		}
+		catch(Exception e)
+		{
+			return;
+		}
 	}
 }

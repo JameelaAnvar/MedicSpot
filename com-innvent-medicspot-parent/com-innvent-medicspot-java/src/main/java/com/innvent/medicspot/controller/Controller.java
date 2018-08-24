@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.innvent.medicspot.model.LoginBO;
 import com.innvent.medicspot.model.Medicine;
 import com.innvent.medicspot.model.MedicineStoreBO;
+import com.innvent.medicspot.model.MedicineStoreDO;
 import com.innvent.medicspot.model.Store;
 import com.innvent.medicspot.model.StoreBO;
 import com.innvent.medicspot.model.StoreDetails;
@@ -152,5 +153,31 @@ public class Controller {
 			@RequestParam("lng") String lng,@RequestParam("medId") String medicineId)
 	{
 		return new ResponseEntity<List<MedicineStoreBO>>(service.getMedicineAvailability(lat, lng, medicineId),HttpStatus.OK);
+	}
+	
+	@PostMapping("save/feedback")
+	public ResponseEntity<?> saveFeedback(@RequestBody MedicineStoreDO payload)
+	{
+		service.saveFeedBack(payload);
+		return new ResponseEntity<String>("Feedback saved successfully !",HttpStatus.OK);
+	}
+	
+	@PostMapping("addToStore/medicine")
+	public ResponseEntity<?> addMedicineToStore(@RequestBody MedicineStoreDO payload)
+	{
+		service.addMedicineToStore(payload);
+		return new ResponseEntity<String>("Medicine added to store successfully !",HttpStatus.OK);
+	}
+	
+	@GetMapping("save/feedback")
+	public Object saveFeedbackCSRF(@RequestBody MedicineStoreDO payload)
+	{
+		return null;
+	}
+	
+	@GetMapping("addToStore/medicine")
+	public Object addMedicineToStoreCSRF(@RequestBody MedicineStoreDO payload)
+	{
+		return null;
 	}
 }
