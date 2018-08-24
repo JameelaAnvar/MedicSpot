@@ -4,25 +4,35 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.innvent.medicspot.dao.MedicineRepository;
+import com.innvent.medicspot.dao.MedicineStoreRepository;
 import com.innvent.medicspot.model.Medicine;
+import com.innvent.medicspot.model.MedicineStoreBO;
+import com.innvent.medicspot.model.MedicineStoreDO;
+import com.innvent.medicspot.model.Store;
 import com.opencsv.CSVReader;
 
 @org.springframework.stereotype.Service
 public class MedicineService {
 
+	@Autowired
 	private MedicineRepository repo;
-
-	public MedicineService(@Autowired MedicineRepository repo) {
-		super();
-		this.repo = repo;
-	}
+	@Autowired
+	private StoreService storeService;
+	@Autowired
+	private LocationService locationService;
+	@Autowired
+	private MedicineStoreRepository medStoreRepo;
 
 	public List<Medicine> fetchMedicineList() {
-		
+
 		List<Medicine> resDB = repo.getMedicineList();
 		return resDB;
 	}
@@ -70,5 +80,59 @@ public class MedicineService {
 
 		List<Medicine> returnVal = (List<Medicine>) repo.saveAll(loadMedicines);
 
+	}
+
+	public List<MedicineStoreBO> getMedicineAvailability(String latitude, String longitude, String medicineId) {
+		List<Store> nearByStores = storeService.fetchandSaveNearbyStoreGeoDetails(latitude, longitude);
+		List<String> storePlaceIdList = new ArrayList<>();
+		Map<String, MedicineStoreBO> map = new HashMap<>();
+		Map<String, String> distanceTimeMap;
+		List<MedicineStoreBO> res = new ArrayList<>();
+		for (Store store : nearByStores) {
+			distanceTimeMap = locationService.computeDistance(latitude, longitude, store.getStorePlaceId());
+			if (distanceTimeMap.get("status").equalsIgnoreCase("ok")) {
+				storePlaceIdList.add(store.getStorePlaceId());
+				MedicineStoreBO obj = new MedicineStoreBO();
+				obj.setStorePlaceId(store.getStorePlaceId());
+				obj.setStoreName(store.getStoreName());
+				obj.setStoreAddress(distanceTimeMap.get("destination_address"));
+				obj.setDistance(distanceTimeMap.get("distance"));
+				obj.setDuration(distanceTimeMap.get("duration"));
+				obj.setDistanceNum(Double.parseDouble(distanceTimeMap.get("distanceNum")));
+				obj.setDurationNum(Double.parseDouble(distanceTimeMap.get("durationNum")));
+				obj.setScore((-1) * (obj.getDistanceNum() + obj.getDurationNum()));
+				res.add(obj);
+				map.put(store.getStorePlaceId(), obj);
+			}
+		}
+		List<MedicineStoreDO> availDetailsList = medStoreRepo.getMedicineAvialibility(medicineId, storePlaceIdList);
+		long count = 0;
+		long max = 0;
+		int confiremed = 0;
+		for (MedicineStoreDO obj : availDetailsList) {
+			if (obj.isConfirmed()) {
+				confiremed++;
+				continue;
+			}
+			count = count + obj.getCount();
+			if (max < obj.getCount())
+				max = obj.getCount();
+		}
+		count = count + (max + 1000) * confiremed;
+		for (MedicineStoreDO obj : availDetailsList) {
+			if (obj.isConfirmed()) {
+				map.get(obj.getStoreId()).setPossibility(100.0);
+				MedicineStoreBO val = map.get(obj.getStoreId());
+				val.setScore(max * 1000.0 - val.getDistanceNum() - val.getDurationNum());
+			} else {
+				MedicineStoreBO val = map.get(obj.getStoreId());
+				val.setPossibility(50.0 + ((double) obj.getCount() / (double) count) * 100);
+				if (val.getPossibility() > 100.0) {
+					val.setPossibility(85.0 + (val.getPossibility() - 100.0) / 10);
+				}
+				val.setScore(obj.getCount() * 1000.0 - val.getDistanceNum() - val.getDurationNum());
+			}
+		}
+		return res;
 	}
 }

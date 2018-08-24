@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.innvent.medicspot.model.LoginBO;
 import com.innvent.medicspot.model.Medicine;
+import com.innvent.medicspot.model.MedicineStoreBO;
 import com.innvent.medicspot.model.Store;
 import com.innvent.medicspot.model.StoreBO;
 import com.innvent.medicspot.model.StoreDetails;
@@ -42,11 +43,12 @@ public class Controller {
 	
 	@Autowired
 	LocationService locationService;
+	
 
 	@GetMapping("/list/Medicines")
 	public ResponseEntity<?> getMedicinesList() {
 		List<Medicine> medicineList = service.fetchMedicineList();
-		return new ResponseEntity<List<Medicine>>(medicineList, HttpStatus.OK);
+		return new ResponseEntity<List<Medicine>>(medicineList.subList(0, 200), HttpStatus.OK);
 	}
 
 	@PostMapping("/save/Medicines")
@@ -143,5 +145,12 @@ public class Controller {
 	{
 		
 		return new ResponseEntity<>(locationService.fetchCurrentAddress(lat,lng), HttpStatus.OK);
+	}
+	
+	@GetMapping("/medicine/nearbystores")
+	public ResponseEntity<?> getMedicineAvailability(@RequestParam("lat") String lat,
+			@RequestParam("lng") String lng,@RequestParam("medId") String medicineId)
+	{
+		return new ResponseEntity<List<MedicineStoreBO>>(service.getMedicineAvailability(lat, lng, medicineId),HttpStatus.OK);
 	}
 }
