@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,27 +36,26 @@ import com.innvent.medicspot.service.StoreService;
 public class Controller {
 
 	@Autowired
-	MedicineService service;
+	MedicineService medicineService;
 
 	@Autowired
 	StoreService storeService;
 
 	@Autowired
 	StoreRegisterService storeRegService;
-	
+
 	@Autowired
 	LocationService locationService;
-	
 
 	@GetMapping("/list/Medicines")
 	public ResponseEntity<?> getMedicinesList() {
-		List<Medicine> medicineList = service.fetchMedicineList();
+		List<Medicine> medicineList = medicineService.fetchMedicineList();
 		return new ResponseEntity<List<Medicine>>(medicineList.subList(0, 200), HttpStatus.OK);
 	}
 
 	@PostMapping("/save/Medicines")
 	public ResponseEntity<?> enterNewMedicines(@RequestBody List<Medicine> medicineList) {
-		List<Medicine> response = service.saveNewMedicines(medicineList);
+		List<Medicine> response = medicineService.saveNewMedicines(medicineList);
 		return new ResponseEntity<List<Medicine>>(response, HttpStatus.OK);
 	}
 
@@ -77,7 +77,7 @@ public class Controller {
 
 	@GetMapping("/dataLoad")
 	public String dataDump() throws IOException {
-		service.dumpMedicineList();
+		medicineService.dumpMedicineList();
 
 		return "Dump Success";
 	}
@@ -134,57 +134,65 @@ public class Controller {
 	public Object nearbyStoresGeoDetailsCSRF() {
 		return new Object();
 	}
-	
+
 	@GetMapping("/currentLocationCoordinates")
-	public ResponseEntity<?> getCurrentLocationCoordinates()
-	{
+	public ResponseEntity<?> getCurrentLocationCoordinates() {
 		return new ResponseEntity<>(locationService.fetchGeoLocationCoordinates(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/currentLocationAddress")
-	public ResponseEntity<?> getCurrentAddress(@RequestParam("lat") String lat,
-			@RequestParam("lng") String lng)
-	{
-		
-		return new ResponseEntity<>(locationService.fetchCurrentAddress(lat,lng), HttpStatus.OK);
+	public ResponseEntity<?> getCurrentAddress(@RequestParam("lat") String lat, @RequestParam("lng") String lng) {
+
+		return new ResponseEntity<>(locationService.fetchCurrentAddress(lat, lng), HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/autosuggest/brand_drug")
+	public ResponseEntity<?> getBrandMedicines(@RequestParam("query") String query,
+			@RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
+			@RequestParam(value = "limit", required = false, defaultValue = "100") Integer limit) {
+
+		return new ResponseEntity<>(medicineService.getBrandMedicines(query, offset, limit), HttpStatus.OK);
+	}
+
+	@GetMapping("/autosuggest/salt")
+	public ResponseEntity<?> getMedicineSalt(@RequestParam("query") String query,
+			@RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
+			@RequestParam(value = "limit", required = false, defaultValue = "100") Integer limit) {
+
+		return new ResponseEntity<>(medicineService.getMedicineSalt(query, offset, limit), HttpStatus.OK);
+	}
+
 	@GetMapping("/medicine/nearbystores")
-	public ResponseEntity<?> getMedicineAvailability(@RequestParam("lat") String lat,
-			@RequestParam("lng") String lng,@RequestParam("medId") String medicineId)
-	{
-		return new ResponseEntity<List<MedicineStoreBO>>(service.getMedicineAvailability(lat, lng, medicineId),HttpStatus.OK);
+	public ResponseEntity<?> getMedicineAvailability(@RequestParam("lat") String lat, @RequestParam("lng") String lng,
+			@RequestParam("medId") String medicineId) {
+		return new ResponseEntity<List<MedicineStoreBO>>(medicineService.getMedicineAvailability(lat, lng, medicineId),
+				HttpStatus.OK);
 	}
-	
+
 	@PostMapping("save/feedback")
-	public ResponseEntity<?> saveFeedback(@RequestBody MedicineStoreDO payload)
-	{
-		service.saveFeedBack(payload);
-		return new ResponseEntity<String>("Feedback saved successfully !",HttpStatus.OK);
+	public ResponseEntity<?> saveFeedback(@RequestBody MedicineStoreDO payload) {
+		medicineService.saveFeedBack(payload);
+		return new ResponseEntity<String>("Feedback saved successfully !", HttpStatus.OK);
 	}
-	
+
 	@PostMapping("addToStore/medicine")
-	public ResponseEntity<?> addMedicineToStore(@RequestBody MedicineStoreDO payload)
-	{
-		service.addMedicineToStore(payload);
-		return new ResponseEntity<String>("Medicine added to store successfully !",HttpStatus.OK);
+	public ResponseEntity<?> addMedicineToStore(@RequestBody MedicineStoreDO payload) {
+		medicineService.addMedicineToStore(payload);
+		return new ResponseEntity<String>("Medicine added to store successfully !", HttpStatus.OK);
 	}
-	
+
 	@GetMapping("save/feedback")
-	public Object saveFeedbackCSRF(@RequestBody MedicineStoreDO payload)
-	{
+	public Object saveFeedbackCSRF(@RequestBody MedicineStoreDO payload) {
 		return null;
 	}
-	
+
 	@GetMapping("addToStore/medicine")
-	public Object addMedicineToStoreCSRF(@RequestBody MedicineStoreDO payload)
-	{
+	public Object addMedicineToStoreCSRF(@RequestBody MedicineStoreDO payload) {
 		return null;
 	}
-	
+
 	@GetMapping("store/medicines")
-	public ResponseEntity<?> getMedicineList(@RequestParam("storeId") String storeId)
-	{
-		return new ResponseEntity<List<Medicine>>(service.getMedicinesInStoreList(storeId),HttpStatus.OK);
+	public ResponseEntity<?> getMedicineList(@RequestParam("storeId") String storeId) {
+		return new ResponseEntity<List<Medicine>>(medicineService.getMedicinesInStoreList(storeId), HttpStatus.OK);
 	}
 }

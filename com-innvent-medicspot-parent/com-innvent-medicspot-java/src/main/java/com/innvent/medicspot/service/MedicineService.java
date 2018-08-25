@@ -9,12 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.postgresql.util.PSQLException;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 
 import com.innvent.medicspot.dao.MedicineRepository;
 import com.innvent.medicspot.dao.MedicineStoreRepository;
 import com.innvent.medicspot.model.Medicine;
+import com.innvent.medicspot.model.MedicineDTO;
 import com.innvent.medicspot.model.MedicineStoreBO;
 import com.innvent.medicspot.model.MedicineStoreDO;
 import com.innvent.medicspot.model.Store;
@@ -136,33 +139,55 @@ public class MedicineService {
 		}
 		return res;
 	}
-	
-	public void saveFeedBack(MedicineStoreDO entity)
-	{
-		entity.setId(entity.getStoreId()+","+entity.getMedicineId());
+
+	public void saveFeedBack(MedicineStoreDO entity) {
+		entity.setId(entity.getStoreId() + "," + entity.getMedicineId());
 		try {
-		medStoreRepo.addFeedback(entity.getId(), entity.getStoreId(), UUID.fromString(entity.getMedicineId()));
-		}
-		catch(Exception e)
-		{
+			medStoreRepo.addFeedback(entity.getId(), entity.getStoreId(), UUID.fromString(entity.getMedicineId()));
+		} catch (Exception e) {
 			return;
 		}
 	}
-	public void addMedicineToStore(MedicineStoreDO entity)
-	{
-		entity.setId(entity.getStoreId()+","+entity.getMedicineId());
+
+	public void addMedicineToStore(MedicineStoreDO entity) {
+		entity.setId(entity.getStoreId() + "," + entity.getMedicineId());
 		entity.setConfirmed(true);
 		try {
-		medStoreRepo.addMedicineAvailability(entity.getId(), entity.getStoreId(), UUID.fromString(entity.getMedicineId()), true);
-		}
-		catch(Exception e)
-		{
+			medStoreRepo.addMedicineAvailability(entity.getId(), entity.getStoreId(),
+					UUID.fromString(entity.getMedicineId()), true);
+		} catch (Exception e) {
 			return;
 		}
 	}
-	
-	public List<Medicine> getMedicinesInStoreList(String storeId)
-	{
+
+	public List<Medicine> getMedicinesInStoreList(String storeId) {
 		return repo.getMedicinesinStoreList(storeId);
 	}
+
+	 @Cacheable(value = "branddrugs", key = "#query")
+	public MedicineDTO getBrandMedicines(String query, Integer offset, Integer limit) {
+		List<Medicine> medicineList = repo.getBrandMedicines(query, offset, limit);
+		MedicineDTO result = new MedicineDTO();
+		result.setLimit(limit);
+		result.setOffset(offset);
+		result.setTotal(repo.getBrandMedicinesCount(query));
+		result.setResult(medicineList);
+
+		return result;
+	}
+
+
+
+	@Cacheable(value = "medicinesalt", key = "#query")
+	public MedicineDTO getMedicineSalt(String query, Integer offset, Integer limit) {
+		List<Medicine> medicineList = repo.getMedicineSalt(query, offset, limit);
+		MedicineDTO result = new MedicineDTO();
+		result.setLimit(limit);
+		result.setOffset(offset);
+		result.setTotal(repo.getMedicineSaltCount(query));
+		result.setResult(medicineList);
+
+		return result;
+	}
+
 }

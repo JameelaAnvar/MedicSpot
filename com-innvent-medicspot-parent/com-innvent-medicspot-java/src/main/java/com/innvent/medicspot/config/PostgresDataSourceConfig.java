@@ -33,17 +33,19 @@ public class PostgresDataSourceConfig {
 		 */
 
 		// Himanshu cf DataSource connect
-		
-		 /* DataSource ds =
-		  dsb.username("CuLy38hjO9l0hezP").password("q5_d29iSwQ2Q7uuW")
-		  .url("jdbc:postgresql://10.11.241.24:43241/P11OU0gucj2U7kiY")
-		  .driverClassName("org.postgresql.Driver").build();*/
-		 
+
+		/*
+		 * DataSource ds =
+		 * dsb.username("CuLy38hjO9l0hezP").password("q5_d29iSwQ2Q7uuW")
+		 * .url("jdbc:postgresql://10.11.241.24:43241/P11OU0gucj2U7kiY")
+		 * .driverClassName("org.postgresql.Driver").build();
+		 */
 
 		// Jameela cf DataSource connect
-		/*DataSource ds = dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
+
+		DataSource ds = dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
 				.url("jdbc:postgresql://10.11.241.0:59486/guddVbgkSIZsAM7O").driverClassName("org.postgresql.Driver")
-				.build();*/
+				.build();
 
 		// adil chisel database server connect
 		/*
@@ -58,17 +60,19 @@ public class PostgresDataSourceConfig {
 		// dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
 		// .url("jdbc:postgresql://localhost:30015/guddVbgkSIZsAM7O").driverClassName("org.postgresql.Driver")
 		// .build();
-		  
-		  //Himanshu chisel database server connect
-		  /*DataSource ds =
-				  dsb.username("CuLy38hjO9l0hezP").password("q5_d29iSwQ2Q7uuW")
-				  .url("jdbc:postgresql://localhost:30015/P11OU0gucj2U7kiY")
-				  .driverClassName("org.postgresql.Driver").build();*/
-		  
-		  DataSource ds =
-				  dsb.username("postgres").password("Abcd1234")
-				  .url("jdbc:postgresql://localhost:5432/medicSpot")
-				  .driverClassName("org.postgresql.Driver").build();
+
+		// Himanshu chisel database server connect
+		/*
+		 * DataSource ds =
+		 * dsb.username("CuLy38hjO9l0hezP").password("q5_d29iSwQ2Q7uuW")
+		 * .url("jdbc:postgresql://localhost:30015/P11OU0gucj2U7kiY")
+		 * .driverClassName("org.postgresql.Driver").build();
+		 */
+
+		// DataSource ds =
+		// dsb.username("postgres").password("Abcd1234")
+		// .url("jdbc:postgresql://localhost:5432/medicSpot")
+		// .driverClassName("org.postgresql.Driver").build();
 
 		return ds;
 
