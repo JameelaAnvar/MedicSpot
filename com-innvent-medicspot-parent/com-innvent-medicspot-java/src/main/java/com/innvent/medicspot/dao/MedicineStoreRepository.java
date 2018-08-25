@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.innvent.medicspot.model.Medicine;
 import com.innvent.medicspot.model.MedicineStoreDO;
 
 @Repository
@@ -26,6 +27,8 @@ public interface MedicineStoreRepository extends CrudRepository<MedicineStoreDO,
 			"	VALUES ( :id, :storeId, :medId, 1)\r\n" + 
 			"	ON CONFLICT (id) DO UPDATE set count = med_store_map.count  + 1 ";
 	
+	String getMedicinesList = "select * from medicine where medicine.id in (select medicine_id from med_store_map where store_id = :storeId)";
+	
 	@Query(value = medicineAvialibilityQuery, nativeQuery = true)
 	public List<MedicineStoreDO> getMedicineAvialibility
 		(@Param(value = "medID") String medID, @Param(value = "storeList") List<String> storeList);
@@ -36,4 +39,7 @@ public interface MedicineStoreRepository extends CrudRepository<MedicineStoreDO,
 	
 	@Query(value = addFeedback, nativeQuery = true)
 	public void addFeedback(@Param(value="id")String id, @Param(value="storeId")String storeId, @Param(value="medId")UUID medId);
+	
+	/*@Query(value = getMedicinesList, nativeQuery = true)
+	public List<Medicine> getMedicinesList(@Param(value = "storeId")String storeId);*/
 }

@@ -160,4 +160,9 @@ public class MedicineService {
 			return;
 		}
 	}
+	
+	public List<Medicine> getMedicinesInStoreList(String storeId)
+	{
+		return repo.getMedicinesinStoreList(storeId);
+	}
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.innvent.medicspot.model.LoginBO;
 import com.innvent.medicspot.model.Medicine;
+import com.innvent.medicspot.model.MedicineBO;
 import com.innvent.medicspot.model.MedicineStoreBO;
 import com.innvent.medicspot.model.MedicineStoreDO;
 import com.innvent.medicspot.model.Store;
@@ -179,5 +180,11 @@ public class Controller {
 	public Object addMedicineToStoreCSRF(@RequestBody MedicineStoreDO payload)
 	{
 		return null;
+	}
+	
+	@GetMapping("store/medicines")
+	public ResponseEntity<?> getMedicineList(@RequestParam("storeId") String storeId)
+	{
+		return new ResponseEntity<List<Medicine>>(service.getMedicinesInStoreList(storeId),HttpStatus.OK);
 	}
 }
