@@ -43,9 +43,9 @@ public class PostgresDataSourceConfig {
 
 		// Jameela cf DataSource connect
 
-		DataSource ds = dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
+		/*DataSource ds = dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
 				.url("jdbc:postgresql://10.11.241.0:59486/guddVbgkSIZsAM7O").driverClassName("org.postgresql.Driver")
-				.build();
+				.build();*/
 
 		// adil chisel database server connect
 		/*
@@ -69,10 +69,10 @@ public class PostgresDataSourceConfig {
 		 * .driverClassName("org.postgresql.Driver").build();
 		 */
 
-		// DataSource ds =
-		// dsb.username("postgres").password("Abcd1234")
-		// .url("jdbc:postgresql://localhost:5432/medicSpot")
-		// .driverClassName("org.postgresql.Driver").build();
+		 DataSource ds =
+		 dsb.username("postgres").password("Abcd1234")
+		 .url("jdbc:postgresql://localhost:5432/medicSpot")
+		 .driverClassName("org.postgresql.Driver").build();
 
 		return ds;
 
@@ -83,8 +83,8 @@ public class PostgresDataSourceConfig {
 	 * 
 	 * @throws SQLException
 	 */
-	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws SQLException {
+	//@Bean
+	/*public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws SQLException {
 		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
 		entityManagerFactory.setDataSource(ds);
@@ -110,7 +110,7 @@ public class PostgresDataSourceConfig {
 		entityManagerFactory.setJpaProperties(additionalProperties);
 
 		return entityManagerFactory;
-	}
+	}*/
 
 	/**
 	 * Declare the transaction manager.

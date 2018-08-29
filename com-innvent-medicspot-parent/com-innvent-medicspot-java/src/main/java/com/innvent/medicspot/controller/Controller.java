@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.innvent.medicspot.model.LoginBO;
+import com.innvent.medicspot.model.LoginResponse;
 import com.innvent.medicspot.model.Medicine;
-import com.innvent.medicspot.model.MedicineBO;
 import com.innvent.medicspot.model.MedicineStoreBO;
 import com.innvent.medicspot.model.MedicineStoreDO;
 import com.innvent.medicspot.model.Store;
@@ -76,10 +75,17 @@ public class Controller {
 	}
 
 	@GetMapping("/dataLoad")
-	public String dataDump() throws IOException {
-		medicineService.dumpMedicineList();
+	public ResponseEntity<?> dataDump() {
+		Map<String, String> res = new HashMap<>();
+		try {
+			medicineService.dumpMedicineList();
+		} catch (IOException e) {
+			res.put("Status", "Error Occured in Loading Data !");
+			return new ResponseEntity<Map<String, String>>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		res.put("Status", "Dump Success !");
 
-		return "Dump Success";
+		return new ResponseEntity<Map<String, String>>(res, HttpStatus.OK);
 	}
 
 	// @GetMapping("/store/placeId")
@@ -96,23 +102,23 @@ public class Controller {
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return new ResponseEntity<>("Exception Occured", HttpStatus.BAD_REQUEST);
+			Map<String, String> response = new HashMap<>();
+			response.put("Status", "Exception Occured !");
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 		return res;
 	}
 
 	@PostMapping("/login/Store")
 	public ResponseEntity<?> validateUserLogin(@RequestBody LoginBO login) {
-		String response = storeRegService.authenticateVendor(login);
-		Map<String, String> map = new HashMap<>();
-		if (response.contains(":")) {
-			String arr[] = response.split(":");
-			map.put("Status", "Authenticated");
-			map.put("Store Name", arr[1]);
-			return new ResponseEntity<>(map, HttpStatus.OK);
+		LoginResponse response = storeRegService.authenticateVendor(login);
+		if (response.getStatus().equalsIgnoreCase("Authenticated")) {
+			return new ResponseEntity<LoginResponse>(response, HttpStatus.OK);
+		} else {
+			Map<String, String> res = new HashMap<>();
+			res.put("Status", response.getStatus());
+			return new ResponseEntity<Map<String, String>>(res, HttpStatus.UNAUTHORIZED);
 		}
-		map.put("Status", response);
-		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
 	@GetMapping("/login/Store")
@@ -172,13 +178,17 @@ public class Controller {
 	@PostMapping("save/feedback")
 	public ResponseEntity<?> saveFeedback(@RequestBody MedicineStoreDO payload) {
 		medicineService.saveFeedBack(payload);
-		return new ResponseEntity<String>("Feedback saved successfully !", HttpStatus.OK);
+		Map<String, String> res = new HashMap<>();
+		res.put("Status", "Feedback saved successfully !");
+		return new ResponseEntity<Map<String, String>>(res, HttpStatus.OK);
 	}
 
 	@PostMapping("addToStore/medicine")
 	public ResponseEntity<?> addMedicineToStore(@RequestBody MedicineStoreDO payload) {
 		medicineService.addMedicineToStore(payload);
-		return new ResponseEntity<String>("Medicine added to store successfully !", HttpStatus.OK);
+		Map<String, String> res = new HashMap<>();
+		res.put("Status", "Medicine added to store successfully !");
+		return new ResponseEntity<Map<String, String>>(res, HttpStatus.OK);
 	}
 
 	@GetMapping("save/feedback")
