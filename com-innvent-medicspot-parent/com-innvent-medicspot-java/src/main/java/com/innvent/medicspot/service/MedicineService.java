@@ -97,6 +97,8 @@ public class MedicineService {
 			if (distanceTimeMap.get("status").equalsIgnoreCase("ok")) {
 				storePlaceIdList.add(store.getStorePlaceId());
 				MedicineStoreBO obj = new MedicineStoreBO();
+				obj.setStoreLatitude(store.getStoreLocationLatitude());
+				obj.setStoreLongitude(store.getStoreLocationLongitude());
 				obj.setStorePlaceId(store.getStorePlaceId());
 				obj.setStoreName(store.getStoreName());
 				obj.setStoreAddress(distanceTimeMap.get("destination_address"));

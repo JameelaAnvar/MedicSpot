@@ -8,6 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MedicineStoreBO {
+
+	String storeLatitude;
+	
+	String storeLongitude;
 	
 	String storePlaceId;
 	
@@ -27,9 +31,11 @@ public class MedicineStoreBO {
 	
 	double durationNum;
 
-	public MedicineStoreBO(String storePlaceId, String storeName, String storeAddress, String distance, String duration,
-			double possibility, double score, double distanceNum, double durationNum) {
-		super();
+	public MedicineStoreBO(String storeLatitude, String storeLongitude, String storePlaceId, String storeName,
+			String storeAddress, String distance, String duration, double possibility, double score, double distanceNum,
+			double durationNum) {
+		this.storeLatitude = storeLatitude;
+		this.storeLongitude = storeLongitude;
 		this.storePlaceId = storePlaceId;
 		this.storeName = storeName;
 		this.storeAddress = storeAddress;
