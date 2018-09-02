@@ -43,9 +43,9 @@ public class PostgresDataSourceConfig {
 
 		// Jameela cf DataSource connect
 
-		/*DataSource ds = dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
+		DataSource ds = dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
 				.url("jdbc:postgresql://10.11.241.0:59486/guddVbgkSIZsAM7O").driverClassName("org.postgresql.Driver")
-				.build();*/
+				.build();
 
 		// adil chisel database server connect
 		/*
@@ -69,10 +69,10 @@ public class PostgresDataSourceConfig {
 		 * .driverClassName("org.postgresql.Driver").build();
 		 */
 
-		 DataSource ds =
-		 dsb.username("postgres").password("Abcd1234")
-		 .url("jdbc:postgresql://localhost:5432/medicSpot")
-		 .driverClassName("org.postgresql.Driver").build();
+		// DataSource ds =
+		// dsb.username("postgres").password("Abcd1234")
+		// .url("jdbc:postgresql://localhost:5432/medicSpot")
+		// .driverClassName("org.postgresql.Driver").build();
 
 		return ds;
 
@@ -83,34 +83,38 @@ public class PostgresDataSourceConfig {
 	 * 
 	 * @throws SQLException
 	 */
-	//@Bean
-	/*public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws SQLException {
-		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-
-		entityManagerFactory.setDataSource(ds);
-
-		// Classpath scanning of @Component, @Service, etc annotated class
-		entityManagerFactory.setPackagesToScan(env.getProperty("entitymanager.packagesToScan"));
-
-		// Vendor adapter
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
-
-		// Hibernate properties
-		Properties additionalProperties = new Properties();
-		additionalProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
-		additionalProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-		// additionalProperties.put("hibernate.hbm2ddl.auto",
-		// env.getProperty("hibernate.hbm2ddl.auto"));
-		additionalProperties.put("hibernate.jdbc.lob.non_contextual_creation",
-				env.getProperty("hibernate.jdbc.lob.non_contextual_creation"));
-		additionalProperties.put("hibernate.temp.use_jdbc_metadata_defaults",
-				env.getProperty("hibernate.temp.use_jdbc_metadata_defaults"));
-
-		entityManagerFactory.setJpaProperties(additionalProperties);
-
-		return entityManagerFactory;
-	}*/
+	// @Bean
+	/*
+	 * public LocalContainerEntityManagerFactoryBean entityManagerFactory()
+	 * throws SQLException { LocalContainerEntityManagerFactoryBean
+	 * entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+	 * 
+	 * entityManagerFactory.setDataSource(ds);
+	 * 
+	 * // Classpath scanning of @Component, @Service, etc annotated class
+	 * entityManagerFactory.setPackagesToScan(env.getProperty(
+	 * "entitymanager.packagesToScan"));
+	 * 
+	 * // Vendor adapter HibernateJpaVendorAdapter vendorAdapter = new
+	 * HibernateJpaVendorAdapter();
+	 * entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
+	 * 
+	 * // Hibernate properties Properties additionalProperties = new
+	 * Properties(); additionalProperties.put("hibernate.dialect",
+	 * env.getProperty("hibernate.dialect"));
+	 * additionalProperties.put("hibernate.show_sql",
+	 * env.getProperty("hibernate.show_sql")); //
+	 * additionalProperties.put("hibernate.hbm2ddl.auto", //
+	 * env.getProperty("hibernate.hbm2ddl.auto"));
+	 * additionalProperties.put("hibernate.jdbc.lob.non_contextual_creation",
+	 * env.getProperty("hibernate.jdbc.lob.non_contextual_creation"));
+	 * additionalProperties.put("hibernate.temp.use_jdbc_metadata_defaults",
+	 * env.getProperty("hibernate.temp.use_jdbc_metadata_defaults"));
+	 * 
+	 * entityManagerFactory.setJpaProperties(additionalProperties);
+	 * 
+	 * return entityManagerFactory; }
+	 */
 
 	/**
 	 * Declare the transaction manager.

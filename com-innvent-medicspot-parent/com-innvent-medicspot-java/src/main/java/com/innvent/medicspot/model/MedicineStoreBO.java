@@ -47,4 +47,6 @@ public class MedicineStoreBO {
 		this.durationNum = durationNum;
 	}
 
+
+
 }

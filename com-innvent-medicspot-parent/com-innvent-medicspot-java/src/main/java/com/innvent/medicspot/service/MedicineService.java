@@ -139,6 +139,12 @@ public class MedicineService {
 				val.setScore(obj.getCount() * 1000.0 - val.getDistanceNum() - val.getDurationNum());
 			}
 		}
+		res.sort((m1, m2) -> {
+		    if(m1.getScore() == m2.getScore()){
+		        return 0;
+		    }
+		    return m1.getScore() > m2.getScore() ? -1 : 1;
+		});
 		return res;
 	}
 
