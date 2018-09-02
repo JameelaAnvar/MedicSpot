@@ -124,12 +124,12 @@ public class MedicineService {
 			if (max < obj.getCount())
 				max = obj.getCount();
 		}
-		count = count + (max + 1000) * confiremed;
+		count = 1+count + (max + 1000) * confiremed;
 		for (MedicineStoreDO obj : availDetailsList) {
 			if (obj.isConfirmed()) {
 				map.get(obj.getStoreId()).setPossibility(100.0);
 				MedicineStoreBO val = map.get(obj.getStoreId());
-				val.setScore(max * 1000.0 - val.getDistanceNum() - val.getDurationNum());
+				val.setScore(max * 10000.0 - val.getDistanceNum() - val.getDurationNum());
 			} else {
 				MedicineStoreBO val = map.get(obj.getStoreId());
 				val.setPossibility(50.0 + ((double) obj.getCount() / (double) count) * 100);

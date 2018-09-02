@@ -33,13 +33,13 @@ public class StoreRegisterService {
 			StoreAccount storePresent = repo.getStoreDetails(store.getUserName());
 			if(storePresent != null) {
 				response.put("Status", "UserId already exists !");
-				return new ResponseEntity<Map<String,String>>(response,HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<Map<String,String>>(response,HttpStatus.OK);
 			}
 		}
 		else
 		{
 			response.put("Status", "Store account already exists !");
-			return new ResponseEntity<Map<String,String>>(response,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Map<String,String>>(response,HttpStatus.OK);
 		}
 		String hashPassword = authenticator.hash(store.getPassword());
 		StoreAccount newStore = new StoreAccount(store.getStoreId(),store.getUserName(),

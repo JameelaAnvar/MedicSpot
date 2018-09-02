@@ -117,7 +117,7 @@ public class Controller {
 		} else {
 			Map<String, String> res = new HashMap<>();
 			res.put("Status", response.getStatus());
-			return new ResponseEntity<Map<String, String>>(res, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<Map<String, String>>(res, HttpStatus.OK);
 		}
 	}
 
