@@ -56,10 +56,10 @@ public class PostgresDataSourceConfig {
 		 */
 
 		// Jameela chisel database server connect
-		// DataSource ds =
-		// dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
-		// .url("jdbc:postgresql://localhost:30015/guddVbgkSIZsAM7O").driverClassName("org.postgresql.Driver")
-		// .build();
+//		 DataSource ds =
+//		 dsb.username("cAehgkdFIdC-0nJv").password("Cp1HNwyy6Q_isbj3")
+//		 .url("jdbc:postgresql://localhost:30015/guddVbgkSIZsAM7O").driverClassName("org.postgresql.Driver")
+//		 .build();
 
 		// Himanshu chisel database server connect
 		/*
